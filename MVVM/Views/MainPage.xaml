@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:CoffeShop.MVVM.ViewModels"
+             xmlns:models="clr-namespace:CoffeShop.MVVM.Models"
+             x:Class="CoffeShop.MVVM.Views.MainPage"
+             BackgroundColor="{StaticResource BGGray}"
+             Title="MainPage"
+             vm:ViewModelLoactor.AutoWireViewModel="True"
+             x:DataType="vm:MainPageViewModel">
+
+    <Grid Margin="15, 0" RowDefinitions=".4*, .1*, .1*, .4*">
+        <Border Grid.RowSpan="2"
+                StrokeThickness="0">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20,20,20,20"/>
+            </Border.StrokeShape>
+
+            <Grid RowDefinitions=".3*, .7*">
+                <Image Grid.RowSpan="2"
+                       Aspect="AspectFill"
+                       Source="{Binding Coffee.Image}"/>
+
+                <Grid ColumnDefinitions="*,*">
+                    <Border Grid.Column="0"
+                            StrokeThickness="0"
+                            Margin="15,15,0,0"
+                            BackgroundColor="{StaticResource DarkGray}"
+                            HeightRequest="40"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            WidthRequest="40">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10,10,10,10"/>
+                        </Border.StrokeShape>
+
+                        <Image Source="left"
+                               HeightRequest="30"
+                               WidthRequest="30">   
+
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource LightGray}"/>
+                            </Image.Behaviors>
+
+                        </Image>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        </Border.GestureRecognizers>
+
+                    </Border>
+                    
+                    <Border Grid.Column="1"
+                            Margin="0,15,15,0"
+                            StrokeThickness="0"
+                            BackgroundColor="{StaticResource DarkGray}"
+                            HeightRequest="40"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            WidthRequest="40">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10,10,10,10"/>
+                        </Border.StrokeShape>
+
+                        <Image Source="whishlist"
+                               HeightRequest="20"
+                               WidthRequest="20">
+
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource LightGray}"/>
+                            </Image.Behaviors>
+                            
+                        </Image>
+
+                    </Border>
+                </Grid>
+            </Grid>
+            
+        </Border>
+
+
+        <Border Grid.Row="1"
+                Grid.RowSpan="2"
+                Stroke="{StaticResource DarkGray}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30,30,30,30"/>
+            </Border.StrokeShape>
+
+            <Grid Padding="20"
+                  BackgroundColor="{StaticResource DarkGray}"
+                  ColumnDefinitions=".5*, .25*, .25*"
+                  RowDefinitions="*,*,*">
+                <Label Grid.ColumnSpan="2"
+                       FontAttributes="Bold"
+                       FontFamily="RubikRegular"
+                       FontSize="20"
+                       Text="{Binding Coffee.Name}"
+                       TextColor="White"/>
+
+                <Label Grid.Column="2"
+                       FontAttributes="Bold"
+                       FontFamily="RubikRegular"
+                       FontSize="20"
+                       HorizontalTextAlignment="Center"
+                       Text="{Binding Coffee.Price, StringFormat='${0:N2}'}"
+                       TextColor="Brown"/>
+
+                <Label Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       FontFamily="RubikLight"
+                       FontSize="15"
+                       Text="{Binding Coffee.SubTitle}"
+                       TextColor="White"/>
+
+
+                <HorizontalStackLayout Grid.Row="2" Spacing="10">
+                    <Label FontFamily="Icons"
+                           FontSize="20"
+                           HorizontalOptions="Center"
+                           Text="&#xE802;"
+                           TextColor="{StaticResource Orange}"
+                           VerticalOptions="Center"/>
+
+                    <Label FontAttributes="Bold"
+                           FontFamily="RubikRegular"
+                           FontSize="15"
+                           Text="4.5"
+                           TextColor="White"
+                           VerticalOptions="Center"/>
+
+                    <Label FontFamily="RubikRegular"
+                           FontSize="15"
+                           Text="(4,4461)"
+                           TextColor="{StaticResource LightGray}"
+                           VerticalOptions="Center"/>
+                    
+                    
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Row="2"
+                                       Grid.ColumnSpan="2"
+                                       Grid.Column="1">
+
+                    <Label Text="{Binding Coffee.CartQuantity}"
+                           TextColor="White"
+                           VerticalOptions="Center"
+                           FontFamily="RubikLight"/>
+                    <Button 
+
+                        BackgroundColor="{StaticResource Brown}"
+                        Padding="40,0"
+                        Command="{Binding AddToCartCommand}"
+                        Margin="10,0"
+                        FontFamily="RubikRegular"
+                        Text="Add to Cart"/>
+                    
+                </HorizontalStackLayout>
+
+                
+            </Grid>
+            
+        </Border>
+
+        <Grid Grid.Row="3" RowDefinitions=".4*, .4*, .2*">
+            <VerticalStackLayout Margin="0,20,0,0" Spacing="10">
+                <Label 
+                    FontFamily="RubikRegular"
+                    FontSize="16"
+                    Text="Description"
+                    TextColor="#D9DADA"/>
+
+                <Label FontSize="14" LineHeight="1.3">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="RubikLight"
+                                  Text="Indulge in the rich aroma and bold flavors of coffee. From single-origin beans to expertly crafted blends, explore the world of coffee with us. Start your day right. Welcome to the coffee community."
+                                  TextColor="{StaticResource LightGray}"/>
+
+                            <Span FontFamily="RubikLight"
+                                  Text="...Read More"
+                                  TextColor="{StaticResource Brown}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Row="1" Margin="0,20,0,0" Spacing="10">
+                <Label Text="Size" TextColor="White"/>
+
+                <HorizontalStackLayout RadioButtonGroup.GroupName="MenuCategories"
+                                       Spacing="10"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center">
+
+                    <BindableLayout.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Small</x:String>
+                            <x:String>Medium</x:String>
+                            <x:String>Large</x:String>
+                        </x:Array>
+                    </BindableLayout.ItemsSource>
+
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Content="{Binding .}">
+                                <RadioButton.ControlTemplate>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <Border x:Name="Container"
+                                                    Stroke="{StaticResource BGGrayB}"
+                                                    WidthRequest="100">
+
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10,10,10,10"/>
+                                                </Border.StrokeShape>
+
+                                                <Label x:Name="TextLabel"
+                                                       HorizontalOptions="Center"
+                                                       Text="{TemplateBinding Content}"
+                                                       VerticalOptions="Center"/>
+                                            </Border>
+
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroupList>
+                                                    <VisualStateGroup x:Name="CheckedStates">
+                                                        <VisualState x:Name="Checked">
+                                                            <VisualState.Setters>
+                                                                <Setter TargetName="TextLabel" Property="Label.TextColor" Value="{StaticResource Brown}"/>
+                                                                <Setter TargetName="Container" Property="Border.BackgroundColor" Value="{StaticResource BGGray}"/>
+                                                                <Setter TargetName="Container" Property="Border.Stroke" Value="{StaticResource Brown}"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                        
+                                                        <VisualState x:Name="Unchecked">
+                                                            <VisualState.Setters>
+                                                                <Setter TargetName="TextLabel" Property="Label.TextColor" Value="{StaticResource LightGray}"/>
+                                                                <Setter TargetName="Container" Property="Border.BackgroundColor" Value="{StaticResource DarkGray}"/>
+                                                                <Setter TargetName="Container" Property="Border.Stroke" Value="{StaticResource DarkGray}"/>
+                                                            </VisualState.Setters>
+                                                        </VisualState>
+                                                        
+                                                    </VisualStateGroup>
+                                                </VisualStateGroupList>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </RadioButton.ControlTemplate>
+                            </RadioButton>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <Button Grid.Row="2"
+                        BackgroundColor="{StaticResource Brown}"
+                        FontFamily="RubikRegular"
+                    Command="{Binding ViewCartCommand}"
+                        Text="View Cart"/>
+        </Grid>
+    </Grid>
+    
+</ContentPage>

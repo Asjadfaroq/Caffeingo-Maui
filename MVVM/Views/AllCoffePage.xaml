@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:CoffeShop.MVVM.ViewModels"
+             xmlns:models="clr-namespace:CoffeShop.MVVM.Models"
+             x:Class="CoffeShop.MVVM.Views.AllCoffePage"
+             BackgroundColor="{StaticResource BGGray}"
+             vm:ViewModelLoactor.AutoWireViewModel="True"
+             Title="AllCoffePage"
+             x:DataType="vm:AllCoffePageViewModel">
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding FromSearch}"
+                     Value="true">
+            <Setter Property="Title" Value="Search for Coffee"/>
+        </DataTrigger>
+    </ContentPage.Triggers>
+
+
+
+    <Grid Margin="15" RowDefinitions="90, Auto, *">
+        
+        <Grid Grid.Row="0" ColumnDefinitions="80,Auto">
+            <Border Grid.Column="0"
+            Margin="15,15,0,0"
+            BackgroundColor="{StaticResource DarkGray}"
+            HeightRequest="40"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            WidthRequest="40">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10,10,10,10"/>
+                </Border.StrokeShape>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Border.GestureRecognizers>
+
+                <Image Source="left"
+               HeightRequest="30"
+               WidthRequest="30">
+
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                    </Image.Behaviors>
+
+                </Image>
+
+            </Border>
+
+            <Label Grid.Column="1" Text="Search for Coffee"
+                   VerticalOptions="Start"
+                   Margin="0, 23, 0, 0"
+                   FontFamily="RubikRegular"
+                   FontAttributes="Bold"
+                   FontSize="25"
+                   HorizontalOptions="Center"
+                   TextColor="White"/>
+        </Grid>
+        
+        <Border Margin="6, 5, 6, 15" Grid.Row="1" StrokeShape="RoundRectangle 15" StrokeThickness="0"
+                BackgroundColor="{StaticResource DarkGray}">
+            <SearchBar x:Name="searchCoffee"
+                       BackgroundColor="{StaticResource DarkGray}"
+                       Placeholder="Search for Coffee..."
+                       PlaceholderColor="{StaticResource LightGray}"
+                       CancelButtonColor="{StaticResource LightGray}"
+                       SearchCommand="{Binding SearchCoffesCommand}"
+                       SearchCommandParameter="{Binding Source={x:Reference searchCoffee}, Path=Text}"
+                       TextColor="{StaticResource White}"
+                       TextChanged="searchCoffee_TextChanged"/>
+        </Border>
+        
+        
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding Coffees}">
+
+
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="1">
+
+                        </LinearItemsLayout>
+                    </CollectionView.ItemsLayout>
+
+
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Coffee">
+                            <Border StrokeShape="RoundRectangle 20"
+                            StrokeThickness="0"
+                            BackgroundColor="{StaticResource DarkGray}"
+                            Padding="10"
+                            Margin="5">
+
+                                <Grid ColumnDefinitions="130, *">
+                                    <Border StrokeShape="RoundRectangle 20"
+                                            HeightRequest="130"
+                                            WidthRequest="130"
+                                            StrokeThickness="0"
+                                            >
+                                        <Image Grid.Column="0"
+                                               Source="{Binding Image}"
+                                               Aspect="AspectFill"/>
+
+                                    </Border>
+                                    
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                 VerticalOptions="Center"
+                                                 Padding="5, 0"
+                                                 Spacing="5">
+
+                                        <Label Text="{Binding Name}"
+                                               TextColor="White"
+                                               FontSize="20"/>
+                                        
+                                        
+                                        <Grid ColumnDefinitions="*, *">
+                                            <Label Grid.Column="0"
+                                           Text="{Binding Price, StringFormat='${0:N2}'}"
+                                                   TextColor="White"
+                                           FontAttributes="Bold"/>
+
+                                            <HorizontalStackLayout Grid.Column="1"
+                                                                   HorizontalOptions="End"
+                                                                   Spacing="2">
+                                                <Label Text="4"
+                                                       TextColor="White"/>
+                                                <Image Source="star"
+                                                       HeightRequest="15"
+                                                       WidthRequest="15">
+
+                                                    <Image.Behaviors>
+                                                        <toolkit:IconTintColorBehavior TintColor="{StaticResource Brown}"/>
+                                                    </Image.Behaviors>
+
+                                                </Image>
+
+
+                                            </HorizontalStackLayout>
+                                        </Grid>
+
+                                        <Border StrokeShape="RoundRectangle 25"
+                                        StrokeThickness="0"
+                                        BackgroundColor="{StaticResource Brown}"
+                                        HeightRequest="45"
+                                        HorizontalOptions="Center"
+                                        Padding="30, 5"
+                                        VerticalOptions="End">
+
+                                            <HorizontalStackLayout Spacing="2">
+
+                                                <Label Text="View more"
+                                                       VerticalOptions="Center"
+                                                       TextColor="White"/>
+
+
+                                            </HorizontalStackLayout>
+
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:AllCoffePageViewModel}}, Path=GoToDetailsPageCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+
+                                        </Border>
+                                    </VerticalStackLayout>
+
+                                </Grid>
+
+
+                            </Border>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+
+                            <BoxView HeightRequest="100"
+                             BackgroundColor="Transparent"/>
+
+                            <Label Text="No pizzas found"
+                           FontSize="25"
+                           TextColor="Gray"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            IsRunning="{Binding Searching}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Color="{StaticResource LightGray}"/>
+
+    </Grid>
+</ContentPage>

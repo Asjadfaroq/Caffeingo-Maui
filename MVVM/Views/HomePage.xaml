@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:CoffeShop.MVVM.ViewModels"
+             xmlns:models="clr-namespace:CoffeShop.MVVM.Models"
+             x:Class="CoffeShop.MVVM.Views.HomePage"
+             BackgroundColor="{StaticResource BGGray}"
+             x:DataType="vm:HomePageViewModel"
+             vm:ViewModelLoactor.AutoWireViewModel="True"
+             Title="HomePage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ControlTemplate x:Key="SectionTemplate">
+                <Border WidthRequest="120" StrokeThickness="0" BackgroundColor="Transparent">
+                    <Label x:Name="label" Text="{TemplateBinding Content}" FontSize="20"
+                           FontFamily="RubikRegular"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="DarkGray"
+                           VerticalOptions="Center"/>
+
+                 
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CheckedStates">
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter TargetName="label" Property="Label.TextColor" Value="{StaticResource Orange}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                
+                                <VisualState x:Name="Unchecked">
+                                    <VisualState.Setters>
+                                        <Setter TargetName="label" Property="Label.TextColor" Value="{StaticResource LightGray}"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Border>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid Margin="15" RowDefinitions="90, Auto, Auto, Auto, Auto, Auto">
+                <Grid ColumnDefinitions="*,*">
+                    <Border Grid.Column="0"
+                            Margin="15,15,0,0"
+                            BackgroundColor="{StaticResource DarkGray}"
+                            HeightRequest="40"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
+                            WidthRequest="40">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10,10,10,10"/>
+                        </Border.StrokeShape>
+
+                        <Image Source="dashboard"
+                               HeightRequest="30"
+                               WidthRequest="30">
+
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource White}"/>
+                            </Image.Behaviors>
+
+                        </Image>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoPopularPageCommand}"
+                                                  CommandParameter="{x:Boolean true}"/>
+                        </Border.GestureRecognizers>
+
+                    </Border>
+
+                    <Border Grid.Column="1"
+                            Margin="0,15,15,0"
+                            BackgroundColor="{StaticResource White}"
+                            HeightRequest="40"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            WidthRequest="40">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10,10,10,10"/>
+                        </Border.StrokeShape>
+
+                        <Image Source="man"
+                               HeightRequest="30"
+                               WidthRequest="30">
+
+                            <!--<Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource LightGray}"/>
+                            </Image.Behaviors>-->
+
+                        </Image>
+
+                    </Border>
+                </Grid>
+
+
+                <Label Grid.Row="1"
+                       Text="Great Coffee
+                       anytime anywhere!"
+                       Margin="15, 15"
+                       TextColor="White"
+                       FontSize="40"
+                       FontFamily="RubikRegular"
+                       FontAttributes="Bold"/>
+
+                <Border Margin="15, 10" Grid.Row="2" StrokeShape="RoundRectangle 15"
+                        StrokeThickness="0"
+                        BackgroundColor="{StaticResource DarkGray}">
+
+                    <Border StrokeShape="RoundRectangle 15"
+                            HeightRequest="55"
+                            StrokeThickness="0">
+                        <HorizontalStackLayout
+                            VerticalOptions="Center"
+                            Padding="20, 0"
+                            HorizontalOptions="Start">
+
+                            <Image Source="search"
+                                   HeightRequest="20"
+                                   WidthRequest="20">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource LightGray}"/>
+                                </Image.Behaviors>
+                            </Image>
+                            <Label Text="Search your Coffee..."
+                                   TextColor="{StaticResource LightGray}"
+                                   FontFamily="RubikLight"
+                                   FontSize="15"
+                                   Padding="10, 14"/>
+                        </HorizontalStackLayout>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoAllCoffeePageCommand}"
+                                                  CommandParameter="{x:Boolean true}"/>
+                        </Border.GestureRecognizers>
+                        
+
+                        
+
+                    </Border>
+
+
+                </Border>
+                
+                <ScrollView Margin="15, 0" Orientation="Horizontal" Grid.Row="3" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout x:Name="SectionList" Margin="0,20,0,0" BindableLayout.ItemsSource="{Binding Sections}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Content="{Binding .}"
+                                             TextColor="DarkGray"
+                                             ControlTemplate="{StaticResource SectionTemplate}"
+                                             CheckedChanged="RadioButton_CheckedChanged">
+
+
+                                </RadioButton>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                        
+                        
+                    </HorizontalStackLayout>
+                    
+                </ScrollView>
+
+                <ScrollView Grid.Row="4" Orientation="Horizontal">
+                    <FlexLayout Direction="Row" Margin="10" BindableLayout.ItemsSource="{Binding Coffees}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Coffee">
+                                <Border StrokeShape="RoundRectangle 20"
+                                        Margin="4"
+                                        StrokeThickness="0"
+                                        BackgroundColor="{StaticResource DarkGray}"
+                                        Padding="10"
+                                        HeightRequest="255"
+                                        WidthRequest="175">
+
+                                    <Grid RowDefinitions="150, Auto, Auto, Auto"
+                                          RowSpacing="10">
+
+                                        <Border StrokeShape="RoundRectangle 20"
+                                                StrokeThickness="0">
+                                            <Image Grid.Row="0"
+                                                   Aspect="AspectFill"
+                                                   Source="{Binding Image}">        
+                                            </Image>
+
+                                        </Border>
+
+
+                                        <Label Text="{Binding Name}"
+                                               Grid.Row="1"
+                                               HorizontalOptions="Start"
+                                               TextColor="white"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               FontFamily="RubikRegular"/>
+
+                                        <Label Text="{Binding SubTitle}"
+                                               Grid.Row="2"
+                                               HorizontalOptions="Start"
+                                               TextColor="white"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               FontFamily="RubikRegular"/>
+
+                                        <Grid Grid.Row="3"
+                                              ColumnDefinitions="*,*">
+                                            <Label Text="{Binding Price, StringFormat='${0:N2}'}"
+                                                   VerticalOptions="Center"
+                                                   TextColor="White"
+                                                   FontAttributes="Bold"/>
+
+                                            <HorizontalStackLayout Grid.Column="1"
+                                                                   HorizontalOptions="End"
+                                                                   Spacing="8">
+                                                <Label Text="4"
+                                                       VerticalOptions="Center"
+                                                       TextColor="White"/>
+
+
+                                                <Border StrokeShape="RoundRectangle 5"
+                                                        HeightRequest="20"
+                                                        BackgroundColor="{StaticResource Brown}"
+                                                        StrokeThickness="0"
+                                                        WidthRequest="20">
+                                                    <Image Source="plus"
+                                                           HeightRequest="8"
+                                                           WidthRequest="8">
+                                                        <Image.Behaviors>
+                                                            <toolkit:IconTintColorBehavior TintColor="White"/>
+                                                        </Image.Behaviors>
+                                                    </Image>
+
+                                                </Border>
+
+
+                                            </HorizontalStackLayout>
+
+
+
+                                        </Grid>
+
+
+
+                                    </Grid>
+
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:HomePageViewModel}}, Path=GoToDetailsPageCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+
+                                </Border>
+
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+
+                    </FlexLayout>
+                </ScrollView>
+
+
+
+                <VerticalStackLayout Margin="15, 20" Grid.Row="5">
+                    <Grid RowDefinitions="Auto, Auto">
+                        <Label Grid.Row="0" Text="Special for you"
+                               TextColor="White"
+                               FontSize="20"
+                               FontFamily="RubikRegular"/>
+
+                        <Border Grid.Row="1" Margin="0, 15" StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="{StaticResource DarkGray}"
+                                
+                                VerticalOptions="Start">
+
+                            <Grid ColumnDefinitions="150, *"
+                                  RowDefinitions="*, Auto"
+                                  RowSpacing="20"
+                                  ColumnSpacing="20"
+                                  Padding="10, 10">
+
+                                <Border Grid.Column="0"
+                                        Grid.RowSpan="2"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 15">
+
+                                    <Image Grid.Column="0"
+                                           Grid.RowSpan="2"
+                                           Aspect="AspectFill"
+                                           Source="{Binding Specialforyou.Image}">
+
+
+                                    </Image>
+
+
+                                </Border>
+
+                                
+
+                                
+
+                                
+
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Grid.Row="0"
+                                                     Spacing="10">
+                                    <Label
+                                                    
+                                        Text="{Binding Specialforyou.Name}"
+                                        FontAttributes="Bold"   
+                                        FontSize="20"    
+                                        TextColor="White"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Center"
+                                        FontFamily="RubikRegular"
+                                                    />
+                                    <Label
+                                        Text="{Binding Specialforyou.SubTitle}"
+                                        FontSize="15"
+                                        TextColor="White"
+                                        FontFamily="RubikRegular"/>
+                                    
+                                    <Label
+                                        Text="Coffee, a beloved elixir, fuels mornings with its aromatic embrace, igniting minds and warming souls with each sip."
+                                        FontSize="12"
+                                        TextColor="White"
+                                        FontFamily="RubikRegular"/>
+                                </VerticalStackLayout>
+
+
+                                <Button Grid.Column="1"
+                                        Grid.Row="1"
+                                        Text="Get it now"
+                                        HorizontalOptions="Start"
+                                        FontFamily="RubikLight"
+                                        CornerRadius="8"
+                                        Padding="40, 0"
+                                        BackgroundColor="{StaticResource Brown}"
+                                        Command="{Binding GoToDetailsPageCommand}"
+                                        CommandParameter="{Binding Specialforyou}"
+                                        TextColor="White"
+                                        FontSize="15"
+                                        />
+                            </Grid>
+
+                        </Border>
+
+                    </Grid>
+                    
+                </VerticalStackLayout>
+
+
+
+
+
+
+                
+
+
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
